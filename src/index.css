@@ -1,0 +1,48 @@
+html {
+  scroll-behavior: smooth;
+}
+
+/* Style for the scrollbar track */
+body::-webkit-scrollbar {
+  width: 12px;
+  background-color: transparent;
+}
+
+/* Style for the scrollbar thumb */
+body::-webkit-scrollbar-thumb {
+  background: rgba(153, 102, 255, 0.7);
+  border-radius: 12px;
+  border: 2px solid transparent;
+  transition: background 0.3s;
+}
+
+/* Hover effect for the scrollbar thumb */
+body::-webkit-scrollbar-thumb:hover {
+  background: rgba(128, 90, 213, 0.9);
+}
+
+/* Active state when scrollbar is being dragged */
+body::-webkit-scrollbar-thumb:active {
+  background: rgba(64, 64, 178, 0.9);
+}
+
+/* Vertical scrollbar customization */
+body::-webkit-scrollbar-thumb:vertical {
+  transition: background 0.3s;
+  background: #6fb422;
+}
+
+/* Hover effect for vertical scrollbar */
+body::-webkit-scrollbar-thumb:vertical:hover {
+  background: #6fb422;
+}
+
+/* Active state for vertical scrollbar */
+body::-webkit-scrollbar-thumb:vertical:active {
+  background: #c02416;
+}
+
+/* Hide scrollbar thumb when not hovering over body */
+body:not(:hover)::-webkit-scrollbar-thumb {
+  background: transparent;
+}
