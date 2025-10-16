@@ -92,7 +92,7 @@ const ProductTab = ({ item }) => {
                                 </tr>
                                 {item?.product_details.map((detail, index) => (
                                   <tr key={index}>
-                                    <td>
+                                    <td width='200'>
                                       <strong>{detail?.key}</strong>
                                     </td>
                                     <td>: {detail?.value}</td>
@@ -237,7 +237,6 @@ const ProductTab = ({ item }) => {
                     </div>
                   </Col>
                 </TabPane>
-
               </TabContent>
             </Row>
           </Col>

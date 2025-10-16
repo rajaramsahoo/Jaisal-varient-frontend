@@ -12,7 +12,7 @@ const CountdownComponent = ({ time }) => {
       // Render a countdown
       return (
         <div className="timer-box">
-          <div className="timer">
+          <div className="timer mt-0">
             <div className="timer-p" id="demo">
               <span>
                 {days}

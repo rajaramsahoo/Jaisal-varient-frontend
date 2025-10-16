@@ -778,6 +778,7 @@ main:where(h1, h2, h4, h5) {
 body {
   top: 0px !important;
   position: static !important;
+  letter-spacing:normal!important;
 }
 
 .VIpgJd-ZVi9od-xl07Ob-lTBxed span {
@@ -3495,23 +3496,29 @@ h1.page-title {
   margin-left: calc(-0.5 * var(--bs-gutter-x));
 }
 .variantsBx > .item {
-  margin: 4px;
-  width: 32%;
+  margin: 0px 10px 15px 0px;
+  width: 31.5%;
+  position: relative;
 }
 .variantsBx .item.default-border {
-  border: 2px solid #74b72c !important; /* black border */
+  border: 3px solid #cdcdcd !important;
   border-radius: 8px;
   padding: 10px;
+  background: #ffffff;
+  box-shadow: 1px 2px 5px 0px #c5c5c5;
 }
+.variantsBx .item .offerBx{padding:2px 7px;position:absolute;top:-1px;right:-1px;background:#cdcdcd;color:#000000;border-radius:0px 6px 0px 8px;}
 
 /* Selected variant (only one will have this) */
 .variantsBx .item.selected-border {
-  border: 2px solid #04413c !important; /* red border */
-  border-radius: 8px;
+  border: 3px solid var(--seconderyGreen) !important;
+  border-radius:8px;
   padding: 10px;
-  box-shadow: 0 0 5px rgba(116, 183, 84, 0.4);
+  box-shadow: 1px 2px 5px 0px var(--seconderyGreen);
   transition: all 0.2s ease;
 }
+.variantsBx .item.selected-border .offerBx{background:var(--seconderyGreen);color:var(--whiteColor);font-weight:500;}
+
 .variant-box {
   transition: all 0.3s ease;
   z-index: 10;
@@ -3519,4 +3526,16 @@ h1.page-title {
 .product-box:hover .variant-box {
   opacity: 1;
   transform: translateY(0);
+}
+
+
+.btn-solid{background-image: linear-gradient(30deg, var(--theme-deafult) 100%, transparent 100%)!important;}
+.product-right .timer{background-color:#043b37!important;border-radius:6px;}
+.timer span .timer-cal{color:#ffffff!important;}
+.tab-product .nav-material.nav-tabs .nav-item .nav-link, .product-full-tab .nav-material.nav-tabs .nav-item .nav-link{padding:8px 30px!important;border-radius:0;}
+
+.relatedProSlide .swiper-slide{max-width:200px!important;}
+
+@media (max-width: 680px) {
+  .relatedProSlide .swiper-slide{max-width:auto!important;}
 }

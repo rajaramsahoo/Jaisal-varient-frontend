@@ -113,9 +113,8 @@ const DetailsWithPrice = ({ item, stickyClass }) => {
 
       {/* Variant List */}
       {product?.variants?.length > 0 && (
-        <div className="variant-selector mb-3 ">
-          <h6 className="fw-bold mb-2">Available Variants:</h6>
-
+        <div className="variant-selector">
+          <h6 className="fw-bold mb-2">Available Size:</h6>
           <div className="">
             <div className="variantsBx">
               {product.variants.map((variant, index) => {
@@ -150,7 +149,7 @@ const DetailsWithPrice = ({ item, stickyClass }) => {
                         </div>
 
                         {vDiscount > 0 && (
-                          <small className="text-success">{vDiscount}% off</small>
+                          <small className="offerBx">{vDiscount}% off</small>
                         )}
                       </>
                     ) : (
@@ -161,8 +160,6 @@ const DetailsWithPrice = ({ item, stickyClass }) => {
               })}
             </div>
           </div>
-
-
         </div>
       )}
 
@@ -172,70 +169,78 @@ const DetailsWithPrice = ({ item, stickyClass }) => {
       {/*  Selected Price */}
       {selectedVariant ? (
         <>
-          <h3 className="mt-2">
-            ₹{offer * quantity}
-            {original > offer && (
-              <del>
-                <span className="money"> ₹{original * quantity}</span>
-              </del>
-            )}
-            {discount > 0 && (
-              <span
-                style={{ color: "green", marginLeft: "8px", fontSize: "18px" }}
-              >
-                {discount}% off
-              </span>
-            )}
-          </h3>
-          <span className="ms-2 text-muted">
+          <div className="row align-items-center mb-3">
+            <div className="col-6">
+              <h3 className="mt-0 mb-0">
+                <b>₹{offer * quantity}</b>
+                {original > offer && (
+                  <del>
+                    <span className="money"> ₹{original * quantity}</span>
+                  </del>
+                )}
+                {discount > 0 && (
+                  <span
+                    style={{ color: "green", marginLeft: "8px", fontSize: "18px" }}
+                  >
+                    {discount}% off
+                  </span>
+                )}
+              </h3>
+            </div>
+            <div className="col-6">
+              {/* CartQuantity start */}
+              <div className="">
+                <div className="qty-box">
+                  <div className="input-group" style={{ justifyContent: "left", }}>
+                    <span className="input-group-prepend">
+                      <button
+                        type="button"
+                        className="btn quantity-left-minus"
+                        onClick={minusQty}
+                      >
+                        <i className="fa fa-minus"></i>
+                      </button>
+                    </span>
+                    <Input
+                      type="text"
+                      value={quantity}
+                      readOnly
+                      className="form-control input-number"
+                    />
+                    <span className="input-group-prepend">
+                      <button
+                        type="button"
+                        className="btn quantity-right-plus"
+                        onClick={() => plusQty(item, selectedVariant)}
+                        disabled={quantity >= 10}
+                      >
+                        <i className="fa fa-plus"></i>
+                      </button>
+                    </span>
+                  </div>
+                </div>
+              </div>
+              {/* CartQuantity end */}
+            </div>
+          </div>
+          <span className="text-muted">
             {item?.itemName} {selectedVariant.packsize_title} package
           </span>
         </>
       ) : (
         <h4 style={{ color: "red" }}>Out of Stock</h4>
       )}
-
-      {/* Quantity + Cart */}
-      <div className="product-description border-product mt-3">
-        <div className="qty-box">
-          <div className="input-group">
-            <span className="input-group-prepend">
-              <button
-                type="button"
-                className="btn quantity-left-minus"
-                onClick={minusQty}
-              >
-                <i className="fa fa-angle-left"></i>
-              </button>
-            </span>
-            <Input
-              type="text"
-              value={quantity}
-              readOnly
-              className="form-control input-number"
-            />
-            <span className="input-group-prepend">
-              <button
-                type="button"
-                className="btn quantity-right-plus"
-                onClick={() => plusQty(item, selectedVariant)}
-                disabled={quantity >= 10}
-              >
-                <i className="fa fa-angle-right"></i>
-              </button>
-            </span>
-          </div>
+      {/* Action Buttons */}
+      <div className="row mt-3">
+        <div className="col-6">
+          <button className="btn btn-solid" onClick={handleAddtoCart} style={{width:'100%'}}>
+            {addCartLoading ? "Adding..." : "Add to cart"}
+          </button>
+        </div>
+        <div className="col-6">
+          <button className="btn btn-solid" style={{width:'100%'}}>Buy Now</button>
         </div>
       </div>
-
-      {/* Action Buttons */}
-      <div className="product-buttons mt-3">
-        <button className="btn btn-solid" onClick={handleAddtoCart}>
-          {addCartLoading ? "Adding..." : "Add to cart"}
-        </button>
-        <button className="btn btn-solid ms-2">Buy Now</button>
-      </div>
-
       {/* Pincode Checker */}
       <div className="pincode-checker border-product">
         <h6 className="product-title">Check Delivery Availability</h6>
@@ -276,19 +281,20 @@ const DetailsWithPrice = ({ item, stickyClass }) => {
         )}
       </div>
 
-      <div className="border-product">
-        <h6 className="product-title">Short Description</h6>
-        <p>{product.short_description}</p>
-      </div>
-
       {selectedVariant?.mark_as_sell &&
         selectedVariant?.offer_end_date &&
         new Date(selectedVariant.offer_end_date) > new Date() && (
-          <div className="border-product">
+          <div className="mt-2 mb-2">
             <h6 className="product-title">Sale Ends In</h6>
             <CountdownComponent time={selectedVariant.offer_end_date} />
           </div>
         )}
+
+      <div className="">
+        <h6 className="product-title">Short Description</h6>
+        <p align="justify">{product.short_description}</p>
+      </div>
+
     </div>
   );
 };

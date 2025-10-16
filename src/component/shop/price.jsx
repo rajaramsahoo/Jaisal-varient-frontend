@@ -103,7 +103,7 @@ const Price = () => {
                           borderRadius: "4px",
                           background: getTrackBackground({
                             values,
-                            colors: ["#ccc", "#f84c3c", "#ccc"],
+                            colors: ["#ccccccff", "#104e2fff", "#146d23ff"],
                             min: minPrice,
                             max: maxPrice,
                           }),
@@ -127,7 +127,7 @@ const Price = () => {
                         height: "16px",
                         width: "16px",
                         borderRadius: "60px",
-                        backgroundColor: "#f84c3c",
+                        backgroundColor: "#3cf83cff",
                         display: "flex",
                         justifyContent: "center",
                         alignItems: "center",

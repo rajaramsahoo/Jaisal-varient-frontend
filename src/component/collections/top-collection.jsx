@@ -74,7 +74,7 @@ const TopCollection = ({
                     <Swiper
                       freeMode={false}
                       navigation={false}
-                      loop={slidesToShow.length > 3} pagination={{ clickable: true }}
+                      loop={slidesToShow.length > 0} pagination={{ clickable: true }}
                       breakpoints={{
                         360: { slidesPerView: Math.min(2, slidesToShow.length), spaceBetween: 15 },
                         480: { slidesPerView: Math.min(2, slidesToShow.length), spaceBetween: 15 },
