@@ -65,74 +65,40 @@ const Comboproducts = () => {
     // console.log(comboOfferProductDeatils?.data, "comboOfferProductDeatils?.data")
     return (
         <CommonLayout title="Combo Offers" parent="home">
-            {/* ===== Swiper Section ===== */}
-            <section className="section-b-space ratio_asos">
-                <div className="collection-wrapper position-relative">
-                    <Container>
-                        <Row>
-                            <Swiper
-                                spaceBetween={30}
-                                autoplay={{ delay: 2500, disableOnInteraction: false }}
-                                loop={comboOfferProductDeatils?.data?.length > 1}
-                                pagination={{ clickable: true }}
-                                modules={[Pagination, Autoplay]}
-                                style={{ "--swiper-pagination-color": "#74b72c" }}
-                                className="mySwiper"
-                                id="healthy-combos"
-                            >
-                                {comboOfferProductDeatils?.data?.length === 0 ? (
-                                    <SwiperSlide>
-                                        <div
-                                            className="bigProductPart"
-                                            onClick={() => alert("Combo Products coming soon!")}
-                                        >
-                                            <div className="imgBx">
-                                                <img
-                                                    src="https://res.cloudinary.com/dshkgcwoh/image/upload/v1755343157/fubkjyahf6bm5mg0wymw.jpg"
-                                                    alt="No combo available"
-                                                    loading="lazy"
-                                                />
-                                            </div>
-                                        </div>
-                                    </SwiperSlide>
-                                ) : (
-                                    comboOfferProductDeatils?.data?.map((item, index) => (
-                                        <SwiperSlide key={`${item._id}-${index}`}>
-                                            <div className="bigProductPart text-center">
-                                                <div
-                                                    className="imgBx rounded-3 shadow"
-                                                    style={{
-                                                        backgroundColor: "#f8f9fa",
-                                                        width: "100%",
-                                                        display: "flex",
-                                                        justifyContent: "center",
-                                                        alignItems: "center",
-                                                        padding: "20px",
-                                                    }}
-                                                >
-                                                    <img
-                                                        src={item?.image_url}
-                                                        alt={item?.name}
-                                                        loading="lazy"
-                                                        style={{
-                                                            height: "400px",
-                                                            objectFit: "contain",
-                                                        }}
-                                                    />
-                                                </div>
-                                                <h4 className="mt-3 fw-bold">{item?.name}</h4>
-                                            </div>
-                                        </SwiperSlide>
-                                    ))
-                                )}
-                            </Swiper>
-                        </Row>
-                    </Container>
-                </div>
-            </section>
-
             {/* ===== Product List Section ===== */}
-            <section className="section-b-space ">
+            <section className="section-b-space">
+
+                {/********* new product part start *********/}
+                <Container>
+                    <Row>
+                        {/* item start */}
+                        <Col md="3" sm="4" xs="12">
+                            <div className="productItemBx">
+                                <div className="imgBx">
+                                    <span className="tagBx">Combo</span>
+                                    <div className="addView">
+                                        <button><i className="fa fa-search"></i> View</button>
+                                        <button><i className="fa fa-plus"></i> Add</button>
+                                    </div>
+                                    <img src="https://res.cloudinary.com/dshkgcwoh/image/upload/v1761889584/izdnwg07cslmmiwcs0zj.webp" alt="" />
+                                </div>
+                                <div className="textBx">
+                                    <h4>Jaisal Extra Long Rice Jaisal Extra Long Rice</h4>
+                                    <h5 className="fw-bold text-dark mb-1">
+                                        ₹23,800<del className="text-muted ms-2">₹24,300</del>
+                                        <span style={{ color: "green", marginLeft: 8, fontSize: 14 }}>2% off</span>
+                                    </h5>
+
+                                    <p>Experience premium quality long-grain rice with rich aroma and perfect fluffiness in every bite.</p>
+                                </div>
+                            </div>
+                        </Col>
+                        {/* item end */}
+                    </Row>
+                </Container>
+                {/********* new product part end *********/}
+
+
                 <Container>
                     <Row>
                         {comboOfferProductDeatils.loading ? (
@@ -289,6 +255,46 @@ const Comboproducts = () => {
                                     })()}
                                 </Col>
                             </Row>
+                            {/******** static part start here ********/}
+                            <h6 className="mb-1"><b>Main Products</b></h6>
+                            <Row>
+                                {/* item start */}
+                                <Col md="4" sm="6" xs="12">
+                                    <div className="productItemBx">
+                                        <div className="imgBx">
+                                            <img src="https://res.cloudinary.com/dshkgcwoh/image/upload/v1761889584/izdnwg07cslmmiwcs0zj.webp" alt="" />
+                                        </div>
+                                        <div className="textBx">
+                                            <h4>Jaisal Extra Long Rice Jaisal Extra Long Rice</h4>
+                                            <h5 className="fw-bold mb-1">
+                                                ₹12,50<small className="text-muted ms-2" style={{fontSize:'13px'}}><i class="fa fa-balance-scale"></i>12Kg</small>&nbsp;&nbsp;<span className="text-muted" style={{fontSize:'13px'}}><i class="fa fa-cubes"></i>Qty:2</span>
+                                            </h5>
+                                        </div>
+                                    </div>
+                                </Col>
+                                {/* item end */}
+                            </Row>
+                            <h6 className="mb-1"><b>Free Products</b></h6>
+                            <Row>
+                                {/* item start */}
+                                <Col md="4" sm="6" xs="12">
+                                    <div className="productItemBx">
+                                        <div className="imgBx">
+                                            <span class="tagBx">Free</span>
+                                            <img src="https://res.cloudinary.com/dshkgcwoh/image/upload/v1761889584/izdnwg07cslmmiwcs0zj.webp" alt="" />
+                                        </div>
+                                        <div className="textBx">
+                                            <h4>Jaisal Extra Long Rice Jaisal Extra Long Rice</h4>
+                                            <h5 className="fw-bold mb-1">
+                                                ₹12,50<small className="text-muted ms-2" style={{fontSize:'13px'}}><i class="fa fa-balance-scale"></i>12Kg</small>&nbsp;&nbsp;<span className="text-muted" style={{fontSize:'13px'}}><i class="fa fa-cubes"></i>Qty:2</span>
+                                            </h5>
+                                        </div>
+                                    </div>
+                                </Col>
+                                {/* item end */}
+                            </Row>
+                            {/******** static part end here ********/}
+
 
                             {/* ==== Main Products ==== */}
                             <h6 className="fw-bold mb-2 text-uppercase small">Main Products</h6>
