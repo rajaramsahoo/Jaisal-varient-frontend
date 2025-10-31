@@ -298,8 +298,19 @@ const CommonProvider = (props) => {
       return null;
     }
   };
-
-
+  const [comboOfferProductDeatils, setComboOfferProductDeatils] = useState({ data: [], loading: false });
+  const getAllComboOfferProductDeatils = async () => {
+    try {
+      setComboOfferProductDeatils({ data: [], loading: true });
+      const { data } = await axios.get(`api/offer-product/details`,);
+      if (data.status === 200) {
+        setComboOfferProductDeatils({ data: data.data, loading: false });
+      }
+    } catch (error) {
+      toast.error(error.response?.data?.message || "Server error");
+      setComboOfferProductDeatils({ data: [], loading: false });
+    }
+  };
 
   return (
     <commonContext.Provider
@@ -345,7 +356,9 @@ const CommonProvider = (props) => {
         getRecipes,
         getHomeScreenReview,
         homeScreenReview,
-        getAllComboOfferProduct, comboOfferList, getSingleOfferProduct, singleOfferProduct, redirectPath, setRedirectPath, codModalShow, setCodModalShow
+        getAllComboOfferProduct, comboOfferList, getSingleOfferProduct, singleOfferProduct, redirectPath, setRedirectPath,
+        codModalShow, setCodModalShow,
+        getAllComboOfferProductDeatils, comboOfferProductDeatils
       }}
     >
       {props.children}

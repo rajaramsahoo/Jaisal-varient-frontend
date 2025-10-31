@@ -8,7 +8,7 @@ import { useLocation, useParams } from "react-router-dom";
 
 const Shop = () => {
   const { categoryList } = useProductContext();
-  const { data, loading, getProductList, getPackagingSize } = useProductContext();
+  const { data, loading, getProductList, getPackagingSize, setLoading, setData } = useProductContext();
   const [sidebarView, setSidebarView] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const params = useParams();
@@ -39,10 +39,15 @@ const Shop = () => {
 
   useEffect(() => {
     const timeout = setTimeout(() => {
-      getProductList(payload);
+      // Optional: clear previous data to prevent showing old products
+      setData([]); // <-- reset data
+      setLoading(true);
+      getProductList(payload).finally(() => setLoading(false));
     }, 500);
+
     return () => clearTimeout(timeout);
   }, [params.slug, start_price, end_price, packages, currentPage]);
+
 
   const openCloseSidebar = () => setSidebarView(!sidebarView);
   useEffect(() => {

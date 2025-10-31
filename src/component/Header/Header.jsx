@@ -49,29 +49,6 @@ const HeaderOne = ({ headerClass, topClass, noTopBar, direction }) => {
     } else document.getElementById("sticky")?.classList?.remove("fixed");
   };
 
-  //==============
-  // const [products, setProducts] = useState([]);
-  // const getAllProducts = async () => {
-  //   try {
-  //     const response = await axios.get(`/api/all/products/list`);
-  //     if (response.status === 200) {
-  //       setProducts(response?.data?.data);
-  //     }
-  //   } catch (error) {
-  //     console.log(error.message);
-  //   }
-  // };
-
-  // useEffect(() => {
-  //   getAllProducts();
-  // }, []);
-  // setReqData({
-  //   category_slug: "raja "
-  // })
-  // console.log(products)
-  //==============
-  //  const [searchTerm, setSearchTerm] = useState("");
-  //  const [filteredProducts, setFilteredProducts] = useState([]);
   const [showDropdown, setShowDropdown] = useState(false);
   const searchRef = useRef(null);
   useEffect(() => {
@@ -278,7 +255,7 @@ const HeaderOne = ({ headerClass, topClass, noTopBar, direction }) => {
                                 </p>
                               </div>
                               <div className="col-2">
-                                <span className="text-success price">₹ {product.offer_price}</span>
+                                <span className="text-success price">₹ {product.min_offer_price}</span>
                               </div>
                             </div>
                           ))}
@@ -329,10 +306,10 @@ const HeaderOne = ({ headerClass, topClass, noTopBar, direction }) => {
                     </NavDropdown>
                     <Nav.Link
                       as={Link}
-                      to="/"
+                      to="/combo-offers"
                       onClick={() => window.scrollTo(0, 0)}
                     >
-                      &nbsp;Community&nbsp;
+                      &nbsp;ComboOffers&nbsp;
                     </Nav.Link>
                     <Nav.Link
                       as={Link}
@@ -363,7 +340,7 @@ const HeaderOne = ({ headerClass, topClass, noTopBar, direction }) => {
                         loading="lazy"
                       />
                       <img
-                        src="../assets/images/drop-arow-white.png"
+                        src="/assets/images/drop-arow-white.png"
                         alt="dropdown icon"
                         style={{ width: "11px" }}
                         loading="lazy"

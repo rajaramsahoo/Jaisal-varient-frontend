@@ -1,87 +1,184 @@
-import React from "react";
-import { Link } from "react-router-dom";
-import { useAuthContext } from "../../helpers/auth/authContext";
-import { IoLogoGooglePlaystore } from "react-icons/io5";
-import { FaAppStoreIos } from "react-icons/fa6";
-import { div } from "motion/react-client";
-const NewFooter = () => {
-  const { isLogin, userData } = useAuthContext();
+import React, { useEffect } from "react";
+import CommonLayout from "../shop/common-layout";
+import { Container, Media, Row } from "reactstrap";
+import { useCommonContext } from "../../helpers/common/CommonContext";
 
+import { Swiper, SwiperSlide } from "swiper/react";
+
+
+import "swiper/css";
+import "swiper/css/pagination";
+
+
+import { Autoplay, FreeMode, Pagination, Navigation } from "swiper/modules";
+import { Col } from "react-bootstrap";
+import PostLoader from "../common/post-loader";
+const Comboproducts = () => {
+  const { getAllComboOfferProductDeatils, comboOfferProductDeatils } = useCommonContext();
+  useEffect(() => {
+    getAllComboOfferProductDeatils();
+  }, []);
+  console.log(comboOfferProductDeatils, "comboOfferProductDeatils")
+  const offerPrice = 0;
+  const originalPrice = 0;
+  const discountPercentage = 0;
   return (
-    <footer>
-      {/* new footer work start here */}
-      <div className="newFooter">
-        <div className="container">
-          <div className="row">
-            <div className="col-md-9">
-              <Link to={"/"}>
-                <img src="./assets/images/logo.svg" alt="Jaisil" style={{ maxWidth: '180px' }} />
-              </Link>
-              <div className="row mt-4">
-                <div className="col-md-5">
-                  <h4>For customers</h4>
-                  <ul>
-                    <li><Link to="/about-us">About Us</Link></li>
-                    <li><a href="">Jaisal Cash</a></li>
-                    <li><a href="">Contact us</a></li>
-                    <li><a href="">Refer & Earn</a></li>
-                    <li><Link to="/privacy-policy">Privacy Policy</Link></li>
-                    <li><Link to="cancellation-and-refund-policy">Return & Shipping Policies</Link></li>
-                    <li><Link to="/shipping-and-delivery-policy">Shipping and Delivery-Policy</Link></li>
-                    <li><Link to="/terms-and-conditions">Terms & Conditions</Link></li>
-                    <li><Link to="/faq">FAQs</Link></li>
-                  </ul>
-                </div>
-                <div className="col-md-3">
-                  <h4>Product</h4>
-                  <ul>
-                    <li><Link to="/shop/basmati-rice">Basmati Rice</Link></li>
-                    <li><Link to="/shop/brown-rice">Brown Rice</Link></li>
-                    <li><a href="">Non Basmati Rice</a></li>
-                    <li><a href="">Superfoods</a></li>
-                    <li><a href="">Health Combo</a></li>
-                    <li><a href="">Pulses</a></li>
-                    <li><a href="">Millets</a></li>
-                  </ul>
-                </div>
-                <div className="col-md-4">
-                  <h4>Explore</h4>
-                  <ul>
-                    <li><Link to="/blog">Blogs</Link></li>
-                    <li><Link to="/recipes">Recipes</Link></li>
-                    <li><a href="">Lab Reports</a></li>
-                    <li><a href="">Trace Order </a></li>
-                  </ul>
-                </div>
-              </div>
-            </div>
-            <div className="col-md-3">
-              <h2 align="right">Stay in touch</h2>
-              <h3>JAISAL ORGANIC</h3>
-              <h6 className="mt-4">Contact Us</h6>
-              <div className="subscribeBx">
-                <input type="text" placeholder="Subscribe With Email" />
-                <button type="submit"><img src="/assets/images/paper-plane.svg" alt="" /></button>
-              </div>
-            </div>
-          </div>
+    <CommonLayout title="Combo Offers" parent="home">
+      <section className="section-b-space ratio_asos">
+        <div className="collection-wrapper position-relative">
+          <Container>
+            <Row>
+              <Swiper
+                spaceBetween={30}
+                autoplay={{
+                  delay: 2500,
+                  disableOnInteraction: false,
+                }}
+                loop={comboOfferProductDeatils?.data?.length > 1}
+                pagination={{
+                  clickable: true,
+                }}
+                modules={[Pagination, Autoplay]}
+                style={{
+                  "--swiper-navigation-color": "#74b72c",
+                  "--swiper-pagination-color": "#74b72c",
+                }}
+                className="mySwiper"
+                id="healthy-combos"
+              >
+                {comboOfferProductDeatils?.data?.length === 0 ? (
+                  <SwiperSlide>
+                    <div className="bigProductPart" onClick={() => toast.warning(" Combo Products coming soon ")}>
+                      <div className="imgBx">
+                        <img src="https://res.cloudinary.com/dshkgcwoh/image/upload/v1755343157/fubkjyahf6bm5mg0wymw.jpg" alt="No combo available" loading="lazy" />
+                      </div>
+                    </div>
+                  </SwiperSlide>
+                ) : (
+                  comboOfferProductDeatils?.data?.map((item, index) => (
+                    <SwiperSlide key={`${item._id}-${index}`}>
+                      <div
+                        className="bigProductPart"
+
+                      >
+
+
+                        <div className="imgBx" style={{ backgroundColor: "red", width: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                          <img src={item?.image_url} alt={item?.name} loading="lazy"
+                            style={{
+                              height: '500px',
+                              objectFit: 'contain'
+                            }}
+                          />
+                        </div>
+                      </div>
+                    </SwiperSlide>
+                  ))
+                )}
+
+              </Swiper>
+            </Row>
+          </Container>
         </div>
-      </div>
-      {/* new footer work end here */}
+      </section>
+      <Col className="collection-content">
+        <div className="page-main-content">
+          <Row>
+            <Col sm="12">
+              <div className="collection-product-wrapper">
+                <div className={`product-wrapper-grid `}>
 
-      {/* Copyright line start */}
-      <div className="text-center p-3 lowerFooter">
-        {""}Copyright 2025 <a className="text-white" href="https://jaisal.co.in/" target="_blank">jaisal.co.in</a> All rights reserved{""}
-      </div>
-      {/* Copyright line end */}
+                  <Row>
+                    {comboOfferProductDeatils?.loading ? (
+                      <PostLoader />
+                    ) : comboOfferProductDeatils?.data && comboOfferProductDeatils?.data.length > 0 ? (
+                      comboOfferProductDeatils?.data.map((product, i) => (
+                        <div className="" key={i}>
+                          <div className="product addtocart_count">
+                            <div
+                              className={`product product-box product-wrapper-box`}
+                              style={{ cursor: "pointer" }}
+                            >        {/*inActiveProduct*/}
+                              <div className="img-wrapper">
+                                <div className="lable-block">
+                                  {product.new === "true" ? <span className="lable3">new</span> : ""}
 
-      {/* whatsapp floating icon start */}
-      <div class="whatsappBx">
-        <a href="https://api.whatsapp.com/send/?phone=7996879968" target="_blank"><img src="./assets/images/whatsapp-logo.webp" alt="" /></a>
-      </div>
-      {/* whatsapp floating icon end */}
-    </footer>
+                                </div>
+                                <div className="front" >
+                                  <Media src={product?.image_url} className="img-fluid" alt="" />
+                                </div>
+
+
+                                <div className="addtocart_btn">
+                                  <button
+                                    className="add-button add_cart rounded-5    "
+                                    title="Add to cart"
+
+                                  >
+
+                                    View
+                                  </button>
+                                  <button
+                                    className="add-button add_cart rounded-5    "
+                                    title="Add to cart"
+
+                                  >
+
+                                    Add
+                                  </button>
+                                </div>
+
+
+                              </div>
+                              {/* product footer section */}
+                              <div className="product-detail">
+                                <div>
+                                  <h6>{product.name}</h6>
+
+                                  {/* <h4>
+                                                                        ₹{offerPrice}
+                                                                        {originalPrice > offerPrice && (
+                                                                            <del>
+                                                                                <span className="money">₹{originalPrice}</span>
+                                                                            </del>
+                                                                        )}
+                                                                        {discountPercentage > 0 && (
+                                                                            <span
+                                                                                style={{ color: "green", marginLeft: "8px", fontSize: "14px" }}
+                                                                            >
+                                                                                {discountPercentage}% off
+                                                                            </span>
+                                                                        )}
+                                                                        <span style={{ marginLeft: "10px", fontSize: "12px", color: "#555" }}>
+                                                                            {activeVariant.packsize_title}
+                                                                        </span>
+                                                                    </h4> */}
+
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      ))
+                    ) : (
+                      <Col xs="12" className="text-center">
+                        <div className="empty-cart-cls">
+
+                          <h3><strong>No Products Found</strong></h3>
+                          <h4>Try adjusting your filters.</h4>
+                        </div>
+                      </Col>
+                    )}
+                  </Row>
+
+                </div>
+              </div>
+            </Col>
+          </Row>
+        </div>
+      </Col>
+    </CommonLayout>
   );
 };
 
-export default NewFooter;
+export default Comboproducts;

@@ -62,7 +62,7 @@ const PackagingFilter = (categoryDetail) => {
                     onChange={() => handleSelectionChange(_id)}
                   />
                   <label className="custom-control-label" htmlFor={_id}>
-                    {`${title} ${unit_name}`}
+                    {`${title} `}
                   </label>
                 </div>
               ))

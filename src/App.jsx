@@ -32,6 +32,7 @@ import { requestFcmToken } from "./firebaseNotification/firebase";
 import { getDeviceId } from "./helpers/deviceId";
 import axios from "./helpers/axios";
 import JaisalLoader from "./component/common/JaisalLoader";
+import Comboproducts from "./component/products/Comboproducts";
 // ----------------------
 // Lazy imports
 // ----------------------
@@ -324,6 +325,7 @@ function App() {
               <Route path="/login" element={<Login />} />
               <Route path="/shop/:slug" element={<Shop />} />
               <Route path="/product-details/:id" element={<ProductPage />} />
+              <Route path="/combo-offers" element={<Comboproducts />} />
 
               {/* Protected routes */}
               <Route path="/account/wishlist" element={<ProtectedRoute />}>

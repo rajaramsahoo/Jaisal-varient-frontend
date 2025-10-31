@@ -15,7 +15,7 @@ import { useProductContext } from "../../helpers/products/ProductContext";
 import { useCartlistContext } from "../../helpers/cart/AddCartContext";
 import { useNavigate } from "react-router-dom";
 const Bestseller = () => {
-  const { categoryList, setCurrentCategorySlug, products, } = useProductContext();
+  const { categoryList, setCurrentCategorySlug, products } = useProductContext();
   const {
     addToCart,
     quantity,
@@ -47,6 +47,7 @@ const Bestseller = () => {
       }
     );
   };
+
 
   return (
     <div className="bestSeller">
@@ -219,25 +220,21 @@ const Bestseller = () => {
                               }}
                             >
                               ₹
-                              {item.sale_price && item.sale_price > 0
-                                ? item.sale_price
-                                : item.offer_price && item.offer_price > 0
-                                  ? item.offer_price
-                                  : item.price}
-                              <div><s>₹{item.price}</s></div>
-
+                              {item.min_offer_price}
+                              <div><s>₹{item.min_price}</s></div>
                             </div>
                           </div>
 
                           <a
                             className="btn"
                             href="#"
-                            onClick={(e) => {
-                              e.preventDefault(); // Prevent page jump
-                              handleAddtoCart(item._id, item);
-                            }}
+                            // onClick={(e) => {
+                            //   e.preventDefault();
+                            //   handleAddtoCart(item._id, item);
+                            // }}
+                            onClick={(e) => handleClick(e, item._id, item)}
                           >
-                            &nbsp;Add to Cart&nbsp;
+                            &nbsp;View&nbsp;
                             <img
                               src="/assets/images/cart-icon-white.svg"
                               style={{ width: "22px" }}

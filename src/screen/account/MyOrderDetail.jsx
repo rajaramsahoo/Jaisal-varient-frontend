@@ -120,6 +120,7 @@ const MyOrderDetail = () => {
       setComboProducts([]);
     }
   }, [comboProductIds.join(","), token]);
+  console.log(items, "items")
 
   return (
     <CommonLayout parent="home" title="My Order Detail">
@@ -313,16 +314,17 @@ const MyOrderDetail = () => {
                                   <tr>
                                     <th>Image</th>
                                     <th>Product Name</th>
+                                    <th>PackSize</th>
                                     <th>Quantity</th>
                                     <th>Price</th>
                                     <th>Review</th>
                                   </tr>
                                 </thead>
-                                {/* <tbody>
+                                <tbody>
                                   {Array.isArray(items) &&
                                     items?.map((item, i) => (
-                                      
-                                      
+
+
                                       <tr key={i}>
                                         <td>
                                           <img
@@ -331,6 +333,7 @@ const MyOrderDetail = () => {
                                           />
                                         </td>
                                         <td>{item?.itemName}</td>
+                                        <td>{item?.packsize_title}</td>
                                         <td>{item?.quantity}</td>
                                         <td>₹ {item?.total_price}</td>
                                         <td>
@@ -341,11 +344,11 @@ const MyOrderDetail = () => {
                                         </td>
                                       </tr>
                                     ))}
-                                    {
+                                  {
 
-                                    }
-                                </tbody> */}
-                                <tbody>
+                                  }
+                                </tbody>
+                                {/* <tbody>
                                   {Array.isArray(items) &&
                                     items.map((item, i) => {
                                       const currentComboProductIds =
@@ -406,7 +409,7 @@ const MyOrderDetail = () => {
                                       );
                                     })}
 
-                                </tbody>
+                                </tbody> */}
                               </table>
                             </div>
                             <div className="d-flex justify-content-between mt-4">

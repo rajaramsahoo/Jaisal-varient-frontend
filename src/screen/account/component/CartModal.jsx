@@ -145,7 +145,18 @@ const CartModal = ({ onClose, ...props }) => {
   const [loadingItem, setLoadingItem] = useState(null);
   const MAX_QTY = 10;
 
-  const cartHandleClose = () => (onClose ? onClose() : setCartModalShow(false));
+  // const cartHandleClose = () => (onClose ? onClose() : setCartModalShow(false));
+  const cartHandleClose = () => {
+    // Remove focus from any focused element inside the offcanvas
+    if (document.activeElement instanceof HTMLElement) {
+      document.activeElement.blur();
+    }
+
+    // Close the offcanvas
+    if (onClose) onClose();
+    else setCartModalShow(false);
+  };
+
   const handleOpenCodModal = () => setCodModalShow(true);
   const handleCloseCodModal = () => setCodModalShow(false);
 
@@ -241,8 +252,31 @@ const CartModal = ({ onClose, ...props }) => {
   );
 
   // ✅ Remove item
+  // const handleRemove = useCallback(
+  //   (item) => {
+  //     MySwal.fire({
+  //       title: "Are you sure?",
+  //       text: "Remove this item from your cart?",
+  //       icon: "warning",
+  //       showCancelButton: true,
+  //       confirmButtonText: "Yes, remove it!",
+  //     }).then((result) => {
+  //       if (result.isConfirmed) {
+  //         removeFromCartlist(item).then(() =>
+  //           MySwal.fire("Removed!", "Item removed from cart.", "success")
+  //         );
+  //       }
+  //     });
+  //   },
+  //   [removeFromCartlist]
+  // );
   const handleRemove = useCallback(
     (item) => {
+      // Remove focus from any element inside Offcanvas before showing SweetAlert
+      if (document.activeElement instanceof HTMLElement) {
+        document.activeElement.blur();
+      }
+
       MySwal.fire({
         title: "Are you sure?",
         text: "Remove this item from your cart?",
@@ -294,7 +328,14 @@ const CartModal = ({ onClose, ...props }) => {
     if (promo_code.trim()) verifyPromo({ promo_code, amount: cartTotalPrice });
   };
   return (
-    <Offcanvas show={cartModalShow} onHide={cartHandleClose} {...props}>
+    // <Offcanvas show={cartModalShow} onHide={cartHandleClose} {...props}>
+    <Offcanvas
+      show={cartModalShow}
+      onHide={cartHandleClose}
+      {...props}
+      style={{ pointerEvents: cartModalShow ? "auto" : "none" }}
+      aria-hidden={!cartModalShow}
+    >
       <Offcanvas.Header closeButton>
         <Offcanvas.Title>Cart: {cartItems.length} Items</Offcanvas.Title>
       </Offcanvas.Header>
@@ -304,9 +345,9 @@ const CartModal = ({ onClose, ...props }) => {
           <div className="canvasBx">
             <div className="cartBx">
               <div className="cartBodyBx">
-                {cartItems.map((item) => (
+                {cartItems.map((item, index) => (
                   <CartItem
-                    key={item.variant._id}
+                    key={item.variant?._id || item._id || index}
                     item={item}
                     quantity={quantity}
                     loadingItem={loadingItem}

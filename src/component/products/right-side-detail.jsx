@@ -15,7 +15,6 @@ const DetailsWithPrice = ({ item, stickyClass }) => {
   useEffect(() => {
     getreviewsList(item?._id);
   }, [item?._id]);
-
   const activeReviews = Array.isArray(reviewList?.data)
     ? reviewList?.data.filter((r) => r.status?.toLowerCase() === "active")
     : [];
@@ -233,12 +232,12 @@ const DetailsWithPrice = ({ item, stickyClass }) => {
       {/* Action Buttons */}
       <div className="row mt-3">
         <div className="col-6">
-          <button className="btn btn-solid" onClick={handleAddtoCart} style={{width:'100%'}}>
+          <button className="btn btn-solid" onClick={handleAddtoCart} style={{ width: '100%' }}>
             {addCartLoading ? "Adding..." : "Add to cart"}
           </button>
         </div>
         <div className="col-6">
-          <button className="btn btn-solid" style={{width:'100%'}}>Buy Now</button>
+          <button className="btn btn-solid" style={{ width: '100%' }}>Buy Now</button>
         </div>
       </div>
       {/* Pincode Checker */}

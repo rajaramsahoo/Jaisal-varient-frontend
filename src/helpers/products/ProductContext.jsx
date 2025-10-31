@@ -299,7 +299,7 @@ const ProductDetailsProvider = (props) => {
         setNewArrivalProducts,
         packageList,
         getlocalStorageProducts, localStorageProducts,
-        products, getAllProducts, reqData, setReqData, currentCategorySlug, setCurrentCategorySlug, searchProducts
+        products, getAllProducts, reqData, setReqData, currentCategorySlug, setCurrentCategorySlug, searchProducts, setLoading, setData
       }}
     >
       {props.children}

@@ -37,6 +37,7 @@ const ProductList = ({
   const handlePageChange = (event, value) => {
     setCurrentPage(value);
   };
+  console.log(data, "data")
   return (
     <Col className="collection-content">
       <div className="page-main-content">

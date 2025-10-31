@@ -34,13 +34,13 @@ const ProductBox = ({ product }) => {
   const [loadingProductId, setLoadingProductId] = useState(null);
   const [addedProductId, setAddedProductId] = useState(null);
 
-  const handleAddToCart = async (productId, quantity, device_id) => {
-    setLoadingProductId(productId);
-    await addToCart(productId, quantity);
+  // const handleAddToCart = async (productId, quantity, device_id) => {
+  //   setLoadingProductId(productId);
+  //   await addToCart(productId, quantity);
 
-    setAddedProductId(productId);
-    setLoadingProductId(null);
-  };
+  //   setAddedProductId(productId);
+  //   setLoadingProductId(null);
+  // };
 
   const [modal, setModal] = useState(false);
   const toggle = () => {
@@ -48,20 +48,7 @@ const ProductBox = ({ product }) => {
     setQuantity(1);
   };
 
-  // const clickProductDetail = () => {
-  //   if (!product?._id) return;
 
-  //   if (product?.stock > 0) {
-  //     navigate(`/product-details/${product?._id}`,
-  //       {
-  //         state: {
-  //           itemName: product?.itemName,
-  //           category_name: product?.category_name
-  //         }
-  //       }
-  //     );
-  //   }
-  // };
 
 
   const clickProductDetail = () => {
@@ -90,6 +77,68 @@ const ProductBox = ({ product }) => {
   const discountPercentage = originalPrice
     ? Math.round(((originalPrice - offerPrice) / originalPrice) * 100)
     : 0;
+  const [selectedVariant, setSelectedVariant] = useState(null);
+
+  // Auto-select first in-stock variant whenever product changes
+  useEffect(() => {
+    if (product?.variants?.length) {
+      const firstAvailable = product.variants.find(v => v.stock > 0);
+      if (firstAvailable) setSelectedVariant(firstAvailable);
+    }
+  }, [product]);
+
+  // Optional: reset quantity when modal opens
+  useEffect(() => {
+    if (modal) setQuantity(1);
+  }, [modal]);
+
+  const getPrices = (variant) => {
+    const original = variant?.price || 0;
+    const sale = variant?.sale_price || 0;
+    const offer = sale || variant?.offer_price || original;
+    const discount =
+      original > 0 ? Math.round(((original - offer) / original) * 100) : 0;
+
+    return { original, offer, discount };
+  };
+  const { original, offer, discount } = getPrices(selectedVariant || {});
+  const handleAddtoCart = () => {
+    if (!selectedVariant) return;
+    addToCart(product._id, quantity, selectedVariant._id);
+    setQuantity(1);
+    setCartModalShow(true);
+  };
+
+  const [stockMessage, setStockMessage] = useState("");
+
+  const handlePlusQty = () => {
+    if (!selectedVariant) return;
+
+    const maxAllowed = Math.min(10, selectedVariant.stock);
+
+    if (quantity >= maxAllowed) {
+      // If stock less than 10, we show "Out of Stock"
+      if (selectedVariant.stock < 10) {
+        setStockMessage("Out of Stock");
+      } else {
+        setStockMessage("Maximum 10 units allowed");
+      }
+      return;
+    }
+
+    // increment quantity
+    plusQty(product, selectedVariant);
+    setStockMessage(""); // clear message if incremented successfully
+  };
+  const handleMinusQty = () => {
+    if (quantity > 1) {
+      minusQty();
+      setStockMessage(""); // clear message on decrease
+    }
+  };
+  // console.log(stockMessage, "stock")
+  // console.log(selectedVariant, "selectedVariant.stock")
+
   return (
     <>
       <div
@@ -131,25 +180,27 @@ const ProductBox = ({ product }) => {
           {
             hasStock ? (<div className="addtocart_btn">
               <button
-                className="add-button add_cart rounded-5    "
-                title="Add to cart"
+                className="add-button add_cart rounded-5 "
+                title="view Product"
 
-                onClick={() => {
-                  handleAddToCart(product._id, quantity);
-                  setCartModalShow(true);
-                }}
+                // onClick={() => {
+                //   handleAddToCart(product._id, quantity);
+                //   setCartModalShow(true);
+                // }}
+                onClick={clickProductDetail}
                 disabled={
                   loadingProductId === product._id ||
                   addedProductId === product._id
                 }
               >
-                {loadingProductId === product._id ? (
-                  <span className="spinner-border spinner-border-sm" />
-                ) : addedProductId === product._id ? (
-                  "Added"
-                ) : (
-                  "Add to cart"
-                )}
+                {/* {loadingProductId === product._id ? (
+                    <span className="spinner-border spinner-border-sm" />
+                  ) : addedProductId === product._id ? (
+                    "Added"
+                  ) : (
+                    "Add to cart"
+                  )} */}
+                View
               </button>
             </div>) : ("")
           }
@@ -171,90 +222,158 @@ const ProductBox = ({ product }) => {
           <Row>
             <Col lg="6" xs="12">
               <div className="quick-view-img">
-                <Media src={product?.images[0]} alt="" className="img-fluid" />
+                <Media
+                  src={product?.images[0]}
+                  alt=""
+                  className="img-fluid"
+                  style={{ width: "300px", height: "300px", objectFit: "contain" }}
+                />
               </div>
             </Col>
+
             <Col lg="6" className="rtl-text">
               <div className="product-right">
                 <h2> {product?.itemName} </h2>
+                {/* Variant List */}
+                {product?.variants?.length > 0 && (
+                  <div className="variant-selector">
+                    <h6 className="fw-bold mb-2">Available Size:</h6>
+                    <div className="">
+                      <div className="variantsBx">
+                        {product.variants.map((variant, index) => {
+                          const { original: vOriginal, offer: vOffer, discount: vDiscount } = getPrices(variant);
+                          const isOutOfStock = variant.stock <= 0;
+                          const isSelected = selectedVariant?._id === variant._id;
 
-                <h3>
-                  ₹{offerPrice}
-                  {originalPrice > offerPrice && (
-                    <del>
-                      <span className="money">₹{originalPrice}</span>
-                    </del>
-                  )}
-                  {discountPercentage < 0 && (
-                    <span
-                      style={{
-                        color: "green",
-                        marginLeft: "8px",
-                        fontSize: "10px",
-                      }}
-                    >
-                      {discountPercentage}% off
-                    </span>
-                  )}
-                </h3>
-                <div className="border-product">
-                  <h6 className="product-title">Short Description</h6>
-                  <p>{product?.short_description}</p>
-                </div>
-                <div className="product-description border-product">
-                  <span className="instock-cls">{stock}</span>
-                  <h6 className="product-title">quantity</h6>
-                  <div className="qty-box">
-                    <div className="input-group">
-                      <span className="input-group-prepend">
-                        <button
-                          type="button"
-                          className="btn quantity-left-minus"
-                          onClick={minusQty}
-                          data-type="minus"
-                          data-field=""
-                        >
-                          <i className="fa fa-angle-left"></i>
-                        </button>
-                      </span>
-                      <Input
-                        type="text"
-                        name="quantity"
-                        value={quantity}
-                        className="form-control input-number"
-                      />
-                      <span className="input-group-prepend">
-                        <button
-                          type="button"
-                          className="btn quantity-right-plus"
-                          onClick={() => plusQty(product)}
-                          data-type="plus"
-                          data-field=""
-                        >
-                          <i className="fa fa-angle-right"></i>
-                        </button>
-                      </span>
+                          return (
+                            <div
+                              key={variant.variant_id
+                                || index}
+                              onClick={() => !isOutOfStock && setSelectedVariant(variant)}
+                              className={`item ${isSelected ? "selected-border" : "default-border"}`}
+                              style={{
+                                cursor: isOutOfStock ? "not-allowed" : "pointer",
+                                minWidth: "150px",
+                                opacity: isOutOfStock ? 0.6 : 1,
+                                transition: "all 0.2s ease",
+                              }}
+                            >
+                              <div className="fw-bold">{variant.packsize_title}</div>
+
+                              {!isOutOfStock ? (
+                                <>
+                                  <div style={{ fontSize: "14px" }}>
+                                    <span>
+                                      ₹{vOffer} for {variant.packsize_title} pocket
+                                    </span>
+                                    {vOriginal > vOffer && (
+                                      <del className="ms-2 text-muted">₹{vOriginal}</del>
+                                    )}
+                                  </div>
+
+                                  {vDiscount > 0 && (
+                                    <small className="offerBx">{vDiscount}% off</small>
+                                  )}
+                                </>
+                              ) : (
+                                <small className="text-danger">Out of Stock</small>
+                              )}
+                            </div>
+                          );
+                        })}
+                      </div>
                     </div>
                   </div>
-                </div>
-                <div className="product-buttons">
-                  <button
-                    className="btn btn-solid"
-                    onClick={
-                      !isLogin
-                        ? () => setShow(true)
-                        : () => addToCart(product._id, quantity)
-                    }
-                    disabled={addCartLoading}
-                  >
-                    {addCartLoading ? "Adding..." : "Add to cart"}
-                  </button>
-                  <button
-                    className="btn btn-solid"
-                    onClick={clickProductDetail}
-                  >
-                    View detail
-                  </button>
+                )}
+                {/*  Selected Price */}
+                {selectedVariant ? (
+                  <>
+                    <div className="row align-items-center mb-3">
+                      <div className="col-6">
+                        <h3 className="mt-0 mb-0">
+                          <b>₹{offer * quantity}</b>
+                          {original > offer && (
+                            <del>
+                              <span className="money"> ₹{original * quantity}</span>
+                            </del>
+                          )}
+                          {discount > 0 && (
+                            <span
+                              style={{ color: "green", marginLeft: "8px", fontSize: "18px" }}
+                            >
+                              {discount}% off
+                            </span>
+                          )}
+                        </h3>
+                      </div>
+                      <div className="col-6">
+                        {/* CartQuantity start */}
+                        <div className="">
+                          <div className="qty-box">
+                            <div className="input-group" style={{ justifyContent: "left", }}>
+                              <span className="input-group-prepend">
+                                <button
+                                  type="button"
+                                  className="btn quantity-left-minus"
+                                  onClick={handleMinusQty}
+                                >
+                                  <i className="fa fa-minus"></i>
+                                </button>
+                              </span>
+                              <Input
+                                type="text"
+                                value={quantity}
+                                readOnly
+                                className="form-control input-number"
+                              />
+                              <span className="input-group-prepend">
+                                {/* <button
+                                  type="button"
+                                  className="btn quantity-right-plus"
+                                  onClick={() => plusQty(product, selectedVariant)}
+                                  disabled={quantity >= 10}
+                                >
+                                  <i className="fa fa-plus"></i>
+                                </button> */}
+                                <button
+                                  type="button"
+                                  className="btn quantity-right-plus"
+                                  onClick={handlePlusQty}
+                                // disabled={quantity >= Math.min(10, selectedVariant?.stock || 0)}
+                                >
+                                  <i className="fa fa-plus"></i>
+                                </button>
+
+
+                              </span>
+                              {stockMessage && (
+                                <div style={{ color: "red", fontSize: "13px", marginTop: "5px" }}>
+                                  {stockMessage}
+                                </div>
+                              )}
+                            </div>
+                          </div>
+                        </div>
+                        {/* CartQuantity end */}
+                      </div>
+                    </div>
+                    <span className="text-muted">
+                      {product?.itemName} - {selectedVariant.packsize_title} package
+                    </span>
+                  </>
+                ) : (
+                  <h4 style={{ color: "red" }}>Out of Stock</h4>
+                )}
+                {/* Action Buttons */}
+                <div className="row mt-3">
+                  <div className="col-6">
+                    <button className="btn btn-solid" onClick={handleAddtoCart} style={{ width: '100%' }}>
+                      {addCartLoading ? "Adding..." : "Add to cart"}
+                    </button>
+                  </div>
+                  <div className="col-6">
+                    <button className="btn btn-solid" style={{ width: '100%' }}>Buy Now</button>
+                  </div>
                 </div>
               </div>
             </Col>
